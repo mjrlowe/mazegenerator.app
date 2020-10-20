@@ -193,11 +193,3 @@ if (location.hash != "") {
 }
 requestAnimationFrame(animate);
 generate();
-
-/*
-todo:
-can I improve tooltip accessiblity? maybe with aria-live and javascript setting innerHTML?
-should I be using label elements?
-
-download as jpg, svg, gif (pdf, mp4)
-*/
