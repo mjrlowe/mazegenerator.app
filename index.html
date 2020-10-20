@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="https://cdn.glitch.com/b2ba220b-55a2-4fb7-b084-a43960279a7e%2F5x5-maze-icon-2.png?v=1603141242401" />
+    <title>Maze Generator</title>
+    <link rel="stylesheet" href="/style.css" />
+
+    <script src="/script.js" type="module"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+      integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <div class="display-column">
+      <canvas id="canvas" width="800" height="800"></canvas>
+    </div>
+
+    <div class="settings-column">
+      <h1>Maze Generator</h1>
+      <button
+        type="button"
+        class="drawer-tab"
+        id="drawerTab"
+        aria-label="Toggle sidebar"
+      ></button>
+      <form id="mazeSettingsForm">
+<!--         <input type="hidden" name="version" value="1" /> -->
+        <div class="group">
+          <div>
+            random seed:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >Determines the outcome of the algorithm's random choices. You
+                can regenerate the same maze if the seed and other settings are
+                preserved, or generate a new maze with the same settings by
+                changing the seed.</span
+              >
+            </button>
+          </div>
+          <input
+            type="number"
+            name="randomSeed"
+            id="randomSeed"
+            min="0"
+            max="10000000"
+            step="1"
+            value="1234567"
+          />
+          <button type="button" id="randomSeedButton">generate new maze</button>
+        </div>
+        <div class="group">
+          <div>
+            animation controls:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >The maze generation algorithm can be paused, reset, or
+                incrementally advanced.<br />Keyboard shortcuts:<br />R=reset
+                <br />Space=play/pause<br />S = step</span
+              >
+            </button>
+          </div>
+          <button type="button" id="resetButton">reset</button>
+          <button type="button" id="playButton">pause</button>
+          <button type="button" id="stepButton">step</button>
+        </div>
+        <div class="group">
+          <div>
+            animation rate:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >How fast the maze algorithm adds cells to the maze. Drag all
+                the way to the right to instantly finish the maze.</span
+              >
+            </button>
+          </div>
+          <input
+            type="range"
+            name="animationRate"
+            min="0.25"
+            max="1"
+            step="0.01"
+            value="0.7"
+          />
+        </div>
+        <div class="group">
+          <div>
+            grid width/height:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >The width and height (in cells) of the maze</span
+              >
+            </button>
+          </div>
+          <input
+            type="number"
+            name="gridWidth"
+            min="1"
+            max="100"
+            step="1"
+            value="32"
+          />
+          <input
+            type="number"
+            name="gridHeight"
+            min="2"
+            max="200"
+            step="1"
+            value="32"
+          />
+        </div>
+        <div class="group">
+          <div>
+            Main color:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext">The color of the walls/lines</span>
+            </button>
+          </div>
+          <input type="color" name="mainColor" value="#000000" />
+        </div>
+        <div class="group">
+          <div>
+            Background color:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >The color of inside of the cells and the area that surounds the
+                maze.</span
+              >
+            </button>
+          </div>
+          <input type="color" name="backgroundColor" value="#FFFFFF" />
+        </div>
+        <div class="group">
+          <div>
+            Line Thickness:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >The width of the line as a proportion of the cell size</span
+              >
+            </button>
+          </div>
+          <input
+            type="range"
+            name="lineThickness"
+            min="0"
+            max="0.92"
+            step="0.01"
+            value=".45"
+          />
+        </div>
+        <div class="group">
+          <div>
+            Algorithm:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >The algorithm used to generate the maze</span
+              >
+            </button>
+          </div>
+          <select name="algorithm">
+            <option value="depthFirstSearch" selected
+              >Depth-first search</option
+            >
+            <option value="ellers">Eller's</option>
+            <option value="sidewinder">Sidewinder</option>
+            <option value="kruskal">Kruskal's</option>
+            <option value="simplifiedPrims">Simplified Prim's</option>
+            <option value="modifiedPrims">Modified Prim's</option>
+            <option value="truePrims">True Prim's</option>
+            <option value="huntAndKill">Hunt and kill</option>
+            <option value="binaryTree">Binary tree</option>
+            <option value="aldousBroder">Aldous Broder</option>
+            <option value="recursiveDivision">Recursive division</option>
+            <option value="wilsons">Wilson's</option>
+
+            <option value="tenPrint">10 print</option>
+          </select>
+          <span class="select-arrows"></span>
+        </div>
+
+        <div class="group">
+          <div>
+            As line:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >Whether to display the paths as lines or cells with walls</span
+              >
+            </button>
+          </div>
+          <input type="checkbox" name="asLine" value="false" />
+        </div>
+        <div class="group">
+          <div>
+            Line cap:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >Whether the ends of the lines are round or square</span
+              >
+            </button>
+          </div>
+          <select name="lineCap">
+            <option value="square" selected>Sqaure</option>
+            <option value="round">Round</option>
+          </select>
+          <span class="select-arrows"></span>
+        </div>
+        <div class="group">
+          <div>
+            Coloring mode:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >How to color the cells</span
+              >
+            </button>
+          </div>
+          <select name="coloringMode">
+            <option value="normal" selected>normal</option>
+            <option value="distance">distance</option>
+          </select>
+          <span class="select-arrows"></span>
+        </div>
+        <div class="group">
+          <div>
+            Color scheme:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >What color scheme to use if coloring mode isn't normal.</span
+              >
+            </button>
+          </div>
+          <select name="colorScheme">
+            <option value="rainbow" selected>rainbow</option>
+            <option value="grayscale">grayscale</option>
+          </select>
+          <span class="select-arrows"></span>
+        </div>
+        <div class="group">
+          <div>
+            Download as:
+            <button type="button" class="infobox" aria-label="Display infobox">
+              <span class="infoboxtext"
+                >Choose a filename, then click a button to save this maze an an
+                image or text file. You can also share a maze by copying and
+                pasting the current URL at the top of your browser, because your
+                settings are stored in the URL.</span
+              >
+            </button>
+          </div>
+          <input
+            type="text"
+            id="fileName"
+            size="12"
+            placeholder="filename"
+            value="maze"
+          />
+          <button type="button" id="pngButton">.png</button>
+          <button type="button" id="txtButton">.txt</button>
+        </div>
+      </form>
+    </div>
+
+    <script></script>
+  </body>
+</html>
