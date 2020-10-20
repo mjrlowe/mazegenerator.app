@@ -127,7 +127,9 @@ mazeSettingsForm.addEventListener("input", function(event) {
     event.target.name === "backgroundColor" ||
     event.target.name === "lineThickness" ||
     event.target.name === "asLine" ||
-    event.target.name === "lineCap"
+    event.target.name === "lineCap" ||
+    event.target.name === "coloringMode" ||
+    event.target.name === "colorScheme"
   ) {
     updateUrl();
     updateDisplay();
