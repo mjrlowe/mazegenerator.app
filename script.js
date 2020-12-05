@@ -1,4 +1,4 @@
-import { Maze } from "https://x.nest.land/maze_generator@0.3.0/mod.js";
+import { Maze } from "https://x.nest.land/maze_generator@0.4.0/mod.js";
 
 const mazeSettingsForm = document.getElementById("mazeSettingsForm");
 const drawerTab = document.getElementById("drawerTab");
@@ -54,7 +54,7 @@ function updateUrl() {
 }
 
 function generate() {
-  maze = Maze.create({
+  maze = new Maze({
     width: parseInt(mazeSettingsForm.gridWidth.value),
     height: parseInt(mazeSettingsForm.gridHeight.value),
     seed:
