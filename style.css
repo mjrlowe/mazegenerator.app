@@ -78,7 +78,7 @@ html {
     content: "?";
   }
 
-  .infobox .infoboxtext {
+  .infobox .infobox-text {
     width: 20em;
     background-color: #CCC;
     color: black;
@@ -94,7 +94,7 @@ html {
     box-shadow: 2px 6px 10px rgba(0,0,0,0.5);
   }
 
-  .infobox .infoboxtext::after {
+  .infobox .infobox-text::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -104,7 +104,7 @@ html {
     border-style: solid;
     border-color: transparent #CCC transparent transparent;
   }
-  .infobox:not(:hover):not(:focus) .infoboxtext {
+  .infobox:not(:hover):not(:focus) .infobox-text {
     display: none;
   }
   
@@ -186,7 +186,7 @@ html {
       background: black;
     }
     
-    .infobox .infoboxtext {
+    .infobox .infobox-text {
       width: 11em;
       top: initial;
       right: initial;
@@ -194,7 +194,7 @@ html {
       left: 50%;
       transform: translateX(-50%);
     }
-    .infobox .infoboxtext::after {
+    .infobox .infobox-text::after {
       left: 50%;
       top: 100%;
       bottom: initial;
