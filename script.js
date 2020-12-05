@@ -19,9 +19,13 @@ function stepAnimation() {
     maze.generate();
   } else {
     animationTime += 0.01 / animationRate;
-    while (animationTime > 0 && !maze.finishedGenerating) {
-      maze.step();
-      animationTime--;
+    if (maze.finishedGenerating) {
+      updatePlaying(false);
+    } else {
+      while (animationTime > 0 && !maze.finishedGenerating) {
+        maze.step();
+        animationTime--;
+      }
     }
   }
 
@@ -57,11 +61,10 @@ function generate() {
   maze = new Maze({
     width: parseInt(mazeSettingsForm.gridWidth.value),
     height: parseInt(mazeSettingsForm.gridHeight.value),
-    seed:
-      parseInt(mazeSettingsForm.randomSeed.value) ??
+    seed: parseInt(mazeSettingsForm.randomSeed.value) ??
       mazeSettingsForm.randomSeed.value ??
       0,
-    algorithm: mazeSettingsForm.algorithm.value
+    algorithm: mazeSettingsForm.algorithm.value,
   });
 
   if (playing) {
@@ -97,7 +100,7 @@ function updateDisplay() {
     asLine: mazeSettingsForm.asLine.checked,
     lineCap: mazeSettingsForm.lineCap.value,
     coloringMode: mazeSettingsForm.coloringMode.value,
-    colorScheme: mazeSettingsForm.colorScheme.value
+    colorScheme: mazeSettingsForm.colorScheme.value,
   });
 }
 
@@ -114,12 +117,12 @@ function updatePlaying(newValue) {
   mazeSettingsForm.playButton.innerText = playing ? "pause" : "play";
 }
 
-window.addEventListener("hashchange", function() {
+window.addEventListener("hashchange", function () {
   loadStateFromUrl();
   generate();
 });
 
-mazeSettingsForm.addEventListener("input", function(event) {
+mazeSettingsForm.addEventListener("input", function (event) {
   if (event.target.name === "animationRate") {
     updateUrl();
   } else if (
@@ -139,7 +142,7 @@ mazeSettingsForm.addEventListener("input", function(event) {
   }
 });
 
-mazeSettingsForm.addEventListener("click", function(event) {
+mazeSettingsForm.addEventListener("click", function (event) {
   if (event.target.id === "randomSeedButton") {
     randomizeSeed();
     generate();
@@ -152,10 +155,13 @@ mazeSettingsForm.addEventListener("click", function(event) {
     updatePlaying(false);
     maze.step();
     updateDisplay();
+  } else if (event.target.id === "braidButton") {
+    maze.braid();
+    updateDisplay();
   }
 });
 
-drawerTab.addEventListener("click", function() {
+drawerTab.addEventListener("click", function () {
   if (document.documentElement.classList.contains("closed-drawer")) {
     document.documentElement.classList.remove("closed-drawer");
   } else {
@@ -163,7 +169,7 @@ drawerTab.addEventListener("click", function() {
   }
 });
 
-pngButton.addEventListener("click", function() {
+pngButton.addEventListener("click", function () {
   const fileName = document.getElementById("fileName");
   const dataUrl = canvas.toDataURL("image/png");
   const anchor = document.createElement("a");
@@ -174,7 +180,7 @@ pngButton.addEventListener("click", function() {
   anchor.dispatchEvent(new MouseEvent("click"));
 });
 
-txtButton.addEventListener("click", function() {
+txtButton.addEventListener("click", function () {
   let text = "Downloaded from: " + location.href + "\n";
   text += maze.getString();
 
