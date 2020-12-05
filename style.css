@@ -57,7 +57,7 @@ html {
     color: #276;
   }
   
-  .infobox {
+  .infobox-icon {
     position: relative;
     display: inline-block;
     border: 1px solid #AAA;
@@ -74,7 +74,7 @@ html {
     appearance: none;
     box-sizing: content-box;
   }
-  .infobox::before {
+  .infobox-icon::before {
     content: "?";
   }
 
