@@ -8,8 +8,14 @@ const txtButton = document.getElementById("txtButton");
 let animationTime = 0;
 let playing;
 updatePlaying(true);
-
 let maze;
+
+const documentRootStyles = getComputedStyle(document.querySelector(':root'))
+const cssMazeBackgroundColor = documentRootStyles.getPropertyValue('--page-background-color').replaceAll(" ", "");
+const cssTextColor = documentRootStyles.getPropertyValue('--text-color').replaceAll(" ", "");
+console.log(cssMazeBackgroundColor, cssTextColor)
+mazeSettingsForm.mazeBackgroundColor.value = cssMazeBackgroundColor;
+mazeSettingsForm.mazeMainColor.value = cssTextColor;
 
 function stepAnimation() {
   let inputtedAnimationRate = parseFloat(mazeSettingsForm.animationRate.value);
@@ -91,11 +97,11 @@ function updateDisplay() {
   let canvas = document.getElementsByTagName("canvas")[0];
   let ctx = canvas.getContext("2d");
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.fillStyle = mazeSettingsForm.backgroundColor.value;
+  ctx.fillStyle = mazeSettingsForm.mazeBackgroundColor.value;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   maze.display({
-    mainColor: mazeSettingsForm.mainColor.value,
-    backgroundColor: mazeSettingsForm.backgroundColor.value,
+    mainColor: mazeSettingsForm.mazeMainColor.value,
+    backgroundColor: mazeSettingsForm.mazeBackgroundColor.value,
     lineThickness: mazeSettingsForm.lineThickness.value,
     asLine: mazeSettingsForm.asLine.checked,
     lineCap: mazeSettingsForm.lineCap.value,
@@ -126,8 +132,8 @@ mazeSettingsForm.addEventListener("input", function (event) {
   if (event.target.name === "animationRate") {
     updateUrl();
   } else if (
-    event.target.name === "mainColor" ||
-    event.target.name === "backgroundColor" ||
+    event.target.name === "mazeMainColor" ||
+    event.target.name === "mazeBackgroundColor" ||
     event.target.name === "lineThickness" ||
     event.target.name === "asLine" ||
     event.target.name === "lineCap" ||
@@ -194,8 +200,8 @@ txtButton.addEventListener("click", function () {
   anchor.dispatchEvent(new MouseEvent("click"));
 });
 
-if (location.hash != "") {
-  loadStateFromUrl();
-}
+// if (location.hash != "") {
+//   loadStateFromUrl();
+// }
 requestAnimationFrame(animate);
 generate();
