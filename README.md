@@ -4,8 +4,6 @@ This site is an online maze generator app, that is built using my [maze_generato
 
 ## Todo
 
-* "can I improve tooltip accessiblity? maybe with aria-live and javascript setting innerHTML?"
-* "should I be using label elements?"
 * More download options:
   * jpg
   * svg
